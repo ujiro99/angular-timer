@@ -30,8 +30,9 @@ angular.module('timer', [])
         $scope.countdown = $scope.countdownattr && parseInt($scope.countdownattr, 10) >= 0 ? parseInt($scope.countdownattr, 10) : undefined;
         $scope.isRunning = false;
 
-        $scope.$on('timer-start', function () {
-          $scope.start();
+        $scope.$on('timer-start', function (e, args) {
+          var startTime = angular.isNumber(args) ? args : undefined;
+          $scope.start(startTime);
         });
 
         $scope.$on('timer-resume', function () {
@@ -48,8 +49,9 @@ angular.module('timer', [])
           }
         }
 
-        $scope.start = $element[0].start = function () {
+        $scope.start = $element[0].start = function (startTime) {
           $scope.startTime = $scope.startTimeAttr ? new Date($scope.startTimeAttr) : new Date();
+          $scope.startTime = startTime ? new Date(startTime) : $scope.startTime;
           $scope.endTime = $scope.endTimeAttr ? new Date($scope.endTimeAttr) : null;
           $scope.countdown = $scope.countdownattr && parseInt($scope.countdownattr, 10) > 0 ? parseInt($scope.countdownattr, 10) : undefined;
           resetTimeout();
