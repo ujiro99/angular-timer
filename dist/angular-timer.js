@@ -1,8 +1,8 @@
 /**
- * angular-timer - v1.0.10 - 2013-12-17 8:36 AM
+ * angular-timer - v1.0.10 - 2016-02-14 9:01 AM
  * https://github.com/siddii/angular-timer
  *
- * Copyright (c) 2013 Siddique Hameed
+ * Copyright (c) 2016 Siddique Hameed
  * Licensed MIT <https://github.com/siddii/angular-timer/blob/master/LICENSE.txt>
  */
 angular.module('timer', [])
@@ -37,8 +37,9 @@ angular.module('timer', [])
         $scope.countdown = $scope.countdownattr && parseInt($scope.countdownattr, 10) >= 0 ? parseInt($scope.countdownattr, 10) : undefined;
         $scope.isRunning = false;
 
-        $scope.$on('timer-start', function () {
-          $scope.start();
+        $scope.$on('timer-start', function (e, args) {
+          var startTime = angular.isNumber(args) ? args : undefined;
+          $scope.start(startTime);
         });
 
         $scope.$on('timer-resume', function () {
@@ -55,10 +56,12 @@ angular.module('timer', [])
           }
         }
 
-        $scope.start = $element[0].start = function () {
+        $scope.start = $element[0].start = function (startTime) {
           $scope.startTime = $scope.startTimeAttr ? new Date($scope.startTimeAttr) : new Date();
+          $scope.startTime = startTime ? new Date(startTime) : $scope.startTime;
           $scope.endTime = $scope.endTimeAttr ? new Date($scope.endTimeAttr) : null;
           $scope.countdown = $scope.countdownattr && parseInt($scope.countdownattr, 10) > 0 ? parseInt($scope.countdownattr, 10) : undefined;
+          $scope.countdown = startTime ? new Date(startTime) : $scope.countdown;
           resetTimeout();
           tick();
         };
