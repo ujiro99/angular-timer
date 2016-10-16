@@ -43,6 +43,10 @@ angular.module('timer', [])
           $scope.stop();
         });
 
+        $scope.$on('timer-clear', function () {
+          $scope.clear();
+        });
+
         function resetTimeout() {
           if ($scope.timeoutId) {
             clearTimeout($scope.timeoutId);
@@ -72,6 +76,12 @@ angular.module('timer', [])
           $scope.stoppedTime = new Date();
           resetTimeout();
           $scope.$emit('timer-stopped', {millis: $scope.millis, seconds: $scope.seconds, minutes: $scope.minutes, hours: $scope.hours, days: $scope.days});
+          $scope.timeoutId = null;
+        };
+
+        $scope.clear = function () {
+          $scope.stoppedTime = new Date();
+          resetTimeout();
           $scope.timeoutId = null;
         };
 

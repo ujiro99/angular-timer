@@ -1,5 +1,5 @@
 /**
- * angular-timer - v1.0.10 - 2016-02-14 9:01 AM
+ * angular-timer - v1.0.10 - 2016-10-16 4:19 PM
  * https://github.com/siddii/angular-timer
  *
  * Copyright (c) 2016 Siddique Hameed
@@ -50,6 +50,10 @@ angular.module('timer', [])
           $scope.stop();
         });
 
+        $scope.$on('timer-clear', function () {
+          $scope.clear();
+        });
+
         function resetTimeout() {
           if ($scope.timeoutId) {
             clearTimeout($scope.timeoutId);
@@ -79,6 +83,12 @@ angular.module('timer', [])
           $scope.stoppedTime = new Date();
           resetTimeout();
           $scope.$emit('timer-stopped', {millis: $scope.millis, seconds: $scope.seconds, minutes: $scope.minutes, hours: $scope.hours, days: $scope.days});
+          $scope.timeoutId = null;
+        };
+
+        $scope.clear = function () {
+          $scope.stoppedTime = new Date();
+          resetTimeout();
           $scope.timeoutId = null;
         };
 
